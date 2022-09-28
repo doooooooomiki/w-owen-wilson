@@ -14,7 +14,7 @@
   class OwenWilson extends HTMLElement {
     constructor() {
       super();
-      this._audioCtx = new AudioContext();
+      this._audioCtx = null;
     }
 
     get button() {
@@ -53,6 +53,9 @@
     async onClick() {
       const wow = await this.fetchFromOwenWilsonWowApi(1);
       const url = wow[0].audio;
+
+      this.audioCtx = new AudioContext();
+
       const node = await this.createSourceNode(url);
       node.connect(this.audioCtx.destination);
       node.start();
