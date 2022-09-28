@@ -16,7 +16,6 @@
     constructor() {
       super();
       this._audioCtx = new AudioContext();
-      this._wowBuffer = [];
     }
 
     get button() {
@@ -51,7 +50,6 @@
     async onClick() {
       const wow = await this.fetchFromOwenWilsonWowApi(1);
       const url = wow[0].audio;
-
       const node = await this.createSourceNode(url);
       node.connect(this.audioCtx.destination);
       node.start();
