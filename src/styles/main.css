@@ -1,0 +1,13 @@
+owen-wilson {
+  display: block;
+  margin: 0 auto;
+  width: 160px;
+}
+
+owen-wilson button:hover {
+  cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+}

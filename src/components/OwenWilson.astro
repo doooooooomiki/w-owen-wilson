@@ -1,0 +1,52 @@
+---
+
+---
+
+<p>it's me owen wilson</p>
+
+<owen-wilson>
+  <button>
+    <img src="/owen.webp" alt="">
+  </button>
+</owen-wilson>
+
+
+<script>
+import { resolveConfig } from "astro/dist/core/config/config";
+
+
+  class OwenWilson extends HTMLElement {
+    constructor() {
+      super();
+    }
+
+    get button() {
+      return this.querySelector('button');
+    }
+
+
+    async onClick() {
+      const response = await fetch('https://owen-wilson-wow-api.herokuapp.com/wows/random');
+      const data = await response.json();
+      const audioUrl = data[0].audio;
+
+      const wow = await fetch(audioUrl);
+      const arrayBuffer = await wow.arrayBuffer();
+
+      const audioContext = new AudioContext();
+      const audioBuffer = audioContext.decodeAudioData(arrayBuffer);
+
+      const source = await audioContext.createBufferSource();
+      source.buffer = await audioBuffer;
+      source.connect(audioContext.destination);
+      source.start();
+    }
+
+    connectedCallback() {
+      console.log(this.button);
+      this.button.addEventListener('click', this.onClick);
+    }
+
+  }
+  customElements.define("owen-wilson", OwenWilson);
+</script>
