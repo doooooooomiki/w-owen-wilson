@@ -10,39 +10,55 @@
   </button>
 </owen-wilson>
 
-
 <script>
 
   class OwenWilson extends HTMLElement {
     constructor() {
       super();
+      this._audioCtx = new AudioContext();
+      this._wowBuffer = [];
     }
 
     get button() {
       return this.querySelector('button');
     }
 
+    get audioCtx() {
+      return this._audioCtx;
+    }
+
+    async fetchFromOwenWilsonWowApi(n = 1) {
+      const url = `https://owen-wilson-wow-api.herokuapp.com/wows/random?results=${n}`;
+      const res = await fetch(url);
+      return res.ok 
+        ? await res.json()
+        : Promise.reject(new Error(`${res.status}`));
+    }
+
+    async createAudioBuffer(url) {
+      const wow = await fetch(url);
+      const arrayBuffer = await wow.arrayBuffer();
+      const audioBuffer = await this.audioCtx.decodeAudioData(arrayBuffer);
+      return audioBuffer;
+    }
+
+    async createSourceNode(url) {
+      const sourceNode = await this.audioCtx.createBufferSource();
+      sourceNode.buffer = await this.createAudioBuffer(url);
+      return sourceNode;
+    }
 
     async onClick() {
-      const response = await fetch('https://owen-wilson-wow-api.herokuapp.com/wows/random');
-      const data = await response.json();
-      const audioUrl = data[0].audio;
+      const wow = await this.fetchFromOwenWilsonWowApi(1);
+      const url = wow[0].audio;
 
-      const wow = await fetch(audioUrl);
-      const arrayBuffer = await wow.arrayBuffer();
-
-      const audioContext = new AudioContext();
-      const audioBuffer = audioContext.decodeAudioData(arrayBuffer);
-
-      const source = await audioContext.createBufferSource();
-      source.buffer = await audioBuffer;
-      source.connect(audioContext.destination);
-      source.start();
+      const node = await this.createSourceNode(url);
+      node.connect(this.audioCtx.destination);
+      node.start();
     }
 
     connectedCallback() {
-      console.log(this.button);
-      this.button.addEventListener('click', this.onClick);
+      this.button.addEventListener('click', this.onClick.bind(this));
     }
 
   }
