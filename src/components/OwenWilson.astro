@@ -32,13 +32,31 @@
     async init() {
       this.audioCtx = new AudioContext();
 
-      const wow = await this.fetchFromOwenWilsonWowApi(1);
-      const url = wow[0].audio;
+      /* 
+      // After creating the new audio context it must be used
+      // so we can reuse it later again (looking at you Safari on iOS).
+      // It is indeed used in this method via the playWowFromUrl method
+      // But it's not working like this (looking at you Safari on iOS)
+      // I don't know if it's the async await or the use in another method
+      // Aaaaand I spend too much time on this issue..
+      // so here we are. It's working like this
+      */
+      const successNoise = this.audioCtx.createOscillator();
+      successNoise.connect(this.audioCtx.destination);
+      successNoise.start();
+      successNoise.stop(this.audioCtx.currentTime + 0.000000001);
 
+      const url = await this.getUrlToWowAudio();
       this.playWowFromUrl(url);
       
       this.button.addEventListener('click', this.onClick.bind(this));
       this.removeEventListener('click', this.init);
+    }
+
+    async getUrlToWowAudio() {
+      const wow = await this.fetchFromOwenWilsonWowApi(1);
+      const url = wow[0].audio;
+      return url;
     }
 
     async fetchFromOwenWilsonWowApi(n = 1) {
@@ -70,9 +88,9 @@
     }
 
     async onClick() {
-      const wow = await this.fetchFromOwenWilsonWowApi(1);
-      const url = wow[0].audio;
-      this.playWowFromUrl(url);
+      this.getUrlToWowAudio()
+        .then((url) => this.playWowFromUrl(url))
+        .catch((err) => console.log(err));
     }
 
     connectedCallback() {
