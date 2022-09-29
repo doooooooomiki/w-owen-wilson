@@ -41,10 +41,11 @@
       // Aaaaand I spend too much time on this issue..
       // so here we are. It's working like this
       */
-      const successNoise = this.audioCtx.createOscillator();
-      successNoise.connect(this.audioCtx.destination);
-      successNoise.start();
-      successNoise.stop(this.audioCtx.currentTime + 0.000000001);
+      const miniminisupershortnoise = this.audioCtx.createOscillator();
+      miniminisupershortnoise.connect(this.audioCtx.destination);
+      miniminisupershortnoise.start();
+      miniminisupershortnoise.stop(this.audioCtx.currentTime + 0.000000001);
+      miniminisupershortnoise.disconnect();
 
       const url = await this.getUrlToWowAudio();
       this.playWowFromUrl(url);
