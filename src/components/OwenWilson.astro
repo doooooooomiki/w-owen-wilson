@@ -14,7 +14,7 @@
   class OwenWilson extends HTMLElement {
     constructor() {
       super();
-      this._audioCtx = new AudioContext();
+      this._audioCtx = null;
     }
 
     get button() {
@@ -23,6 +23,26 @@
 
     get audioCtx() {
       return this._audioCtx;
+    }
+
+    set audioCtx(val) {
+      this._audioCtx = val;
+    }
+
+    async init() {
+      this.audioCtx = new AudioContext();
+
+      const wow = await this.fetchFromOwenWilsonWowApi(1);
+      const url = wow[0].audio;
+
+      if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
+
+      const node = await this.createSourceNode(url);
+      node.connect(this.audioCtx.destination);
+      node.start();
+
+      this.button.addEventListener('click', this.onClick.bind(this));
+      this.removeEventListener('click', this.init);
     }
 
     async fetchFromOwenWilsonWowApi(n = 1) {
@@ -58,7 +78,8 @@
     }
 
     connectedCallback() {
-      this.button.addEventListener('click', this.onClick.bind(this));
+      this.addEventListener('click', this.init);
+      //this.button.addEventListener('click', this.onClick.bind(this));
     }
 
   }
