@@ -35,12 +35,8 @@
       const wow = await this.fetchFromOwenWilsonWowApi(1);
       const url = wow[0].audio;
 
-      if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
-
-      const node = await this.createSourceNode(url);
-      node.connect(this.audioCtx.destination);
-      node.start();
-
+      this.playWowFromUrl(url);
+      
       this.button.addEventListener('click', this.onClick.bind(this));
       this.removeEventListener('click', this.init);
     }
@@ -66,20 +62,21 @@
       return sourceNode;
     }
 
-    async onClick() {
-      const wow = await this.fetchFromOwenWilsonWowApi(1);
-      const url = wow[0].audio;
-
+    async playWowFromUrl(url) {
       if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
-
       const node = await this.createSourceNode(url);
       node.connect(this.audioCtx.destination);
       node.start();
     }
 
+    async onClick() {
+      const wow = await this.fetchFromOwenWilsonWowApi(1);
+      const url = wow[0].audio;
+      this.playWowFromUrl(url);
+    }
+
     connectedCallback() {
       this.addEventListener('click', this.init);
-      //this.button.addEventListener('click', this.onClick.bind(this));
     }
 
   }
