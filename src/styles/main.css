@@ -1,7 +1,65 @@
+:root {
+  --color-svg: red;
+}
+
+@font-face {
+  font-family: "Nabla";
+  src: url("/fonts/Nabla.ttf") format("truetype");
+  font-display: swap;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  position: relative;
+  height: 100%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wow {
+  display: inline-block;
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.wow span {
+  display: inline-block;
+  padding: 2rem;
+  position: relative;
+  font-family: "Nabla";
+  font-size: 4rem;
+}
+
+.wow svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.wow.svg-red {
+  --color-svg: red;
+}
+
+.wow.svg-blue {
+  --color-svg: blue;
+}
+
+.wow.svg-green {
+  --color-svg: green;
+}
+
 owen-wilson {
   display: block;
-  margin: 0 auto;
   width: 160px;
+  position: relative;
+  z-index: 666;
 }
 
 owen-wilson button:hover {

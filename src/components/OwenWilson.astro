@@ -2,8 +2,6 @@
 
 ---
 
-<p>it's me owen wilson</p>
-
 <owen-wilson>
   <button>
     <img src="/owen.webp" alt="">
@@ -29,7 +27,7 @@
       this._audioCtx = val;
     }
 
-    async init() {
+    async initAudio() {
       this.audioCtx = new AudioContext();
 
       /* 
@@ -51,7 +49,7 @@
       this.playWowFromUrl(url);
       
       this.button.addEventListener('click', this.onClick.bind(this));
-      this.removeEventListener('click', this.init);
+      this.removeEventListener('click', this.initAudio);
     }
 
     async getUrlToWowAudio() {
@@ -94,8 +92,31 @@
         .catch((err) => console.log(err));
     }
 
+    randomNumber(min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    randomColor() {
+      const colors = ['red', 'green', 'blue'];
+      return colors[Math.floor(Math.random()*colors.length)];
+    }
+
+    writeWow(event) {
+      const color = this.randomColor();
+
+      const clone = window.wow.content.cloneNode(true);
+      const wow = clone.querySelector('.wow');
+
+      wow.classList.add(`svg-${color}`);
+      wow.style.left = `${this.randomNumber(0, window.innerWidth)}px`;
+      wow.style.top = `${this.randomNumber(0, window.innerHeight)}px`;
+
+      document.body.append(clone);
+    }
+
     connectedCallback() {
-      this.addEventListener('click', this.init);
+      this.addEventListener('click', this.initAudio);
+      this.addEventListener('click', this.writeWow);
     }
 
   }
