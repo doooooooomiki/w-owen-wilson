@@ -61,10 +61,15 @@ owen-wilson {
   width: 160px;
   position: relative;
   z-index: 666;
+  transition: transform 100ms ease;
 }
 
-owen-wilson button:hover {
+owen-wilson:hover {
   cursor: pointer;
+}
+
+owen-wilson.is-clicked {
+  transform: scale(0.94);
 }
 
 img {

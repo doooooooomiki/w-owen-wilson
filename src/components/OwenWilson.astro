@@ -1,11 +1,8 @@
 ---
-
 ---
 
 <owen-wilson>
-  <button>
-    <img src="/owen.webp" alt="">
-  </button>
+  <img src="/owen.png" />
 </owen-wilson>
 
 <script>
@@ -13,10 +10,6 @@
     constructor() {
       super();
       this._audioCtx = null;
-    }
-
-    get button() {
-      return this.querySelector('button');
     }
 
     get audioCtx() {
@@ -47,9 +40,9 @@
 
       const url = await this.getUrlToWowAudio();
       this.playWowFromUrl(url);
-      
-      this.button.addEventListener('click', this.onClick.bind(this));
-      this.removeEventListener('click', this.initAudio);
+
+      this.addEventListener("click", this.onClick.bind(this));
+      this.removeEventListener("click", this.initAudio);
     }
 
     async getUrlToWowAudio() {
@@ -61,7 +54,7 @@
     async fetchFromOwenWilsonWowApi(n = 1) {
       const url = `https://owen-wilson-wow-api.herokuapp.com/wows/random?results=${n}`;
       const res = await fetch(url);
-      return res.ok 
+      return res.ok
         ? await res.json()
         : Promise.reject(new Error(`${res.status}`));
     }
@@ -80,7 +73,7 @@
     }
 
     async playWowFromUrl(url) {
-      if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
+      if (this.audioCtx.state === "suspended") this.audioCtx.resume();
       const node = await this.createSourceNode(url);
       node.connect(this.audioCtx.destination);
       node.start();
@@ -97,15 +90,15 @@
     }
 
     randomColor() {
-      const colors = ['red', 'green', 'blue'];
-      return colors[Math.floor(Math.random()*colors.length)];
+      const colors = ["red", "green", "blue"];
+      return colors[Math.floor(Math.random() * colors.length)];
     }
 
     writeWow(event) {
       const color = this.randomColor();
 
       const clone = window.wow.content.cloneNode(true);
-      const wow = clone.querySelector('.wow');
+      const wow = clone.querySelector(".wow");
 
       wow.classList.add(`svg-${color}`);
       wow.style.left = `${this.randomNumber(0, window.innerWidth)}px`;
@@ -114,11 +107,17 @@
       document.body.append(clone);
     }
 
-    connectedCallback() {
-      this.addEventListener('click', this.initAudio);
-      this.addEventListener('click', this.writeWow);
+    temporaryScaling() {
+      console.log(this.classList);
+      this.classList.toggle("is-clicked");
+      setTimeout(() => this.classList.toggle("is-clicked"), 200);
     }
 
+    connectedCallback() {
+      this.addEventListener("click", this.initAudio);
+      this.addEventListener("click", this.writeWow);
+      this.addEventListener("click", this.temporaryScaling);
+    }
   }
   customElements.define("owen-wilson", OwenWilson);
 </script>
