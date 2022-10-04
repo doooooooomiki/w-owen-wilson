@@ -1,18 +1,50 @@
 ---
-import '@css/main.css';
+import "@css/main.css";
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#aa3535">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-		<meta name="theme-color" content="#aa3535" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Wow</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#aa3535" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <meta name="theme-color" content="#aa3535" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Wow</title>
+    <meta
+      name="description"
+      content="One of the wowest pages on this world wide web"
+    />
+
+    <meta property="og:url" content="https://wowen-wilson.netlify.app/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Wow" />
+    <meta
+      property="og:description"
+      content="One of the wowest pages on this world wide web"
+    />
+    <meta
+      property="og:image"
+      content="https://wowen-wilson.netlify.app/og-wilson.png"
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:domain" content="wowen-wilson.netlify.app" />
+    <meta property="twitter:url" content="https://wowen-wilson.netlify.app/" />
+    <meta name="twitter:title" content="Wow" />
+    <meta
+      name="twitter:description"
+      content="One of the wowest pages on this world wide web"
+    />
+    <meta
+      name="twitter:image"
+      content="https://wowen-wilson.netlify.app/og-wilson.png"
+    />
+  </head>
+  <body>
+    <slot />
+  </body>
 </html>
