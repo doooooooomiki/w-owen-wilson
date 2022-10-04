@@ -62,6 +62,7 @@ owen-wilson {
   position: relative;
   z-index: 666;
   transition: transform 100ms ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 owen-wilson:hover {
